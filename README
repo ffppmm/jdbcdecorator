@@ -1,0 +1,41 @@
+= JDBC Decorator =
+
+This implementations does nothing. Hmm thats not quite right. It decorates
+ * java.sql.Connection
+ * java.sql.Statement
+ * java.sql.PreparedStatement
+
+And it brings a new Driver for jdbc: at.fpmedv.jdbc.Driver
+
+You can add functionality by simply extending ConnectionDecorator, StatementDecorator and PreparedStatementDecorator.
+
+If you like to add functionality you must extend ConnectionDecorator, because this is the entry point to the (Prepared)StatementDecorators.
+
+== How to use ==
+
+1) add jdbcdecorator: before your jdbc url
+2) use at.fpmedv.jdbc.Driver as driver for your SQL Connections
+3) add -Djdbcdecorator.connectionWrapperClassname=YOUR.CLASSNAME.OF.CONNECTION
+
+Thats it, but nothing bad will happen if you don't specify the jdbcdecorator.connectionWrapperClassname.
+JDBC Decorator will just return the underlying connection class.
+
+== Underlying driver configuration ==
+Jdbcdecorator tries to load the following drivers:
+
+ * com.mysql.jdbc.Driver
+ * org.postgresql.Driver
+ * oracle.jdbc.driver.OracleDriver
+ * com.sybase.jdbc2.jdbc.SybDriver
+ * net.sourceforge.jtds.jdbc.Driver
+ * com.microsoft.jdbc.sqlserver.SQLServerDriver
+ * com.microsoft.sqlserver.jdbc.SQLServerDriver
+ * weblogic.jdbc.sqlserver.SQLServerDriver
+ * com.informix.jdbc.IfxDriver
+ * org.apache.derby.jdbc.ClientDriver
+ * org.apache.derby.jdbc.EmbeddedDriver
+ * org.hsqldb.jdbcDriver
+ * org.h2.Driver
+ 
+If you use a different driver, you can specify it like this: -Djdbcdecorator.drivers=DRIVER1,DRIVER2,...
+
