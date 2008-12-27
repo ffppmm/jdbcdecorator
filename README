@@ -15,9 +15,9 @@ If you like to add functionality you must extend ConnectionDecorator, because th
 
 1) add jdbcdecorator: before your jdbc url
 2) use at.fpmedv.jdbc.Driver as driver for your SQL Connections
-3) add -Djdbcdecorator.connectionWrapperClassname=YOUR.CLASSNAME.OF.CONNECTION
+3) add -Djdbcdecorator.connectionClassname=YOUR.CLASSNAME.OF.CONNECTION
 
-Thats it, but nothing bad will happen if you don't specify the jdbcdecorator.connectionWrapperClassname.
+Thats it, but nothing bad will happen if you don't specify the jdbcdecorator.connectionClassname.
 JDBC Decorator will just return the underlying connection class.
 
 == Underlying driver configuration ==
@@ -38,4 +38,3 @@ Jdbcdecorator tries to load the following drivers:
  * org.h2.Driver
  
 If you use a different driver, you can specify it like this: -Djdbcdecorator.drivers=DRIVER1,DRIVER2,...
-

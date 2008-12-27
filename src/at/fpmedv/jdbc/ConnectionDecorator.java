@@ -1,3 +1,25 @@
+/*
+ Copyright (C) 2009 fpmedv.at
+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of version 2 of the GNU General Public License as
+ published by the Free Software Foundation.
+
+ There are special exceptions to the terms and conditions of the GPL
+ as it is applied to this software. View the full text of the
+ exception in file EXCEPTIONS-CONNECTOR-J in the directory of this
+ software distribution.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
 package at.fpmedv.jdbc;
 
 import java.sql.Array;
@@ -17,15 +39,40 @@ import java.sql.Struct;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ *
+ * ConnectionDecorator class wraps around an existing Connection
+ * implementation and all calls are made against the underlying Connection Object.
+ * <p>
+ * Following the <a href="http://en.wikipedia.org/wiki/Decorator_pattern">decorator pattern</a>
+ * you can add extra functionality by extending this abstract class.
+ * <p>
+ * <strong>Only functions/variables that vary from the java.sql.Connection interface are documented.</strong>
+ * @see NonRegisteringDriver#connect(String, Properties)
+ * @see java.sql.Connection
+ * @author Franz Philipp Moser
+ *
+ */
 public abstract class ConnectionDecorator implements java.sql.Connection {
 
-	public java.sql.Connection connection;
+	/**
+	 * the underlying Connection object that is decorated
+	 */
+	protected java.sql.Connection connection;
 	
 	/**
-	 * 
+	 * must be serializeable
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Sets the underlying Connection. We need this method because we call
+	 * ConnectionDecorator.getInstance() to get the an Object.
+	 * 
+	 * @param con the Connection that is decorated 
+	 * 
+	 * @see NonRegisteringDriver#connect(String, Properties)
+	 */
 	public void setUnderLyingConnection(java.sql.Connection con) {
 		connection = con;
 	}
@@ -225,7 +272,4 @@ public abstract class ConnectionDecorator implements java.sql.Connection {
 	public <T> T unwrap(Class<T> arg0) throws SQLException {
 		return connection.unwrap(arg0);
 	}
-
-
-
 }

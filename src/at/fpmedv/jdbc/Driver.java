@@ -1,3 +1,25 @@
+/*
+ Copyright (C) fpmedv.at
+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of version 2 of the GNU General Public License as
+ published by the Free Software Foundation.
+
+ There are special exceptions to the terms and conditions of the GPL
+ as it is applied to this software. View the full text of the
+ exception in file EXCEPTIONS-CONNECTOR-J in the directory of this
+ software distribution.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
 package at.fpmedv.jdbc;
 
 import java.sql.SQLException;
@@ -6,26 +28,61 @@ import java.util.Set;
 import java.util.TreeSet;
 
 
-
+/**
+ * The Java SQL at.fpmedv.Driver allows to add more behavior to any existing
+ * jdbc driver following the
+ * <a href="http://en.wikipedia.org/wiki/Decorator_pattern">decorator pattern</a>.
+ * 
+ * <p>
+ * When this Driver class is loaded with Class.forName("at.fpmedv.Driver"), it tries
+ * to register well known Drivers:
+ * <ul>
+ *    <li>com.mysql.jdbc.Driver</li>
+ *    <li>org.postgresql.Driver</li>
+ *    <li>oracle.jdbc.driver.OracleDriver</li>
+ *    <li>com.sybase.jdbc2.jdbc.SybDriver</li>
+ *    <li>net.sourceforge.jtds.jdbc.Driver</li>
+ *    <li>com.microsoft.jdbc.sqlserver.SQLServerDriver</li>
+ *    <li>com.microsoft.sqlserver.jdbc.SQLServerDriver</li>
+ *    <li>weblogic.jdbc.sqlserver.SQLServerDriver</li>
+ *    <li>com.informix.jdbc.IfxDriver</li>
+ *    <li>org.apache.derby.jdbc.ClientDrive</li>
+ *    <li>org.apache.derby.jdbc.EmbeddedDriver</li>
+ *    <li>org.hsqldb.jdbcDrive</li>
+ *    <li>org.h2.Driver</li>
+ * </ul>
+ * by calling Class.forName(DRIVERNAME).
+ * <p>
+ * If your Driver isn't listed here you can specify it as an commandline argument:
+ * <p>
+ * f.e.: <code>-Djdbcdecorator.drivers=your.Driver1,your.Driver2,your.Driver3,...</code>
+ * <p>
+ * It also tries to get the decorator Class for the Connection returned by Driver.connect(). The 
+ * Class name must be specified by a System property:
+ * <code>jdbcdecorator.connectionClassname</code>
+ * 
+ * @see NonRegisteringDriver
+ * @see NonRegisteringDriver#connect(String, java.util.Properties)
+ * @author Franz Philipp Moser
+ */
 public class Driver extends NonRegisteringDriver implements java.sql.Driver {
-	// ~ Static fields/initializers
-	// ---------------------------------------------
-
+	
 	//
 	// Register ourselves with the DriverManager
 	//
 	static {
 		try {
-			String connectionWrapperClassname = System.getProperty("jdbcdecorator.connectionWrapperClassname");
-			if (connectionWrapperClassname != null) {
+			String connectionClassname = System.getProperty("jdbcdecorator.connectionClassname");
+			if (connectionClassname != null) {
+				// initialize ConnectionDecorator implementation
 				try {
-					NonRegisteringDriver.connectionWrapperClass = Class.forName(connectionWrapperClassname);
+					NonRegisteringDriver.connectionClass = Class.forName(connectionClassname);
 				} catch (ClassNotFoundException e) {
 					System.out.println("[jdbcdecorator] not initialized: " + e);
 					e.printStackTrace();
 				}
 			} else {
-				System.out.println("[jdbcdecorator] system property jdbcdecorator.connectionWrapperClassname is null");
+				System.out.println("[jdbcdecorator] system property jdbcdecorator.connectionClassname is null");
 				System.out.println("[jdbcdecorator] not initialized");
 			}
 			java.sql.Driver driver2Register = new Driver();
@@ -81,8 +138,7 @@ public class Driver extends NonRegisteringDriver implements java.sql.Driver {
 	// -----------------------------------------------------------
 
 	/**
-	 * Construct a new driver and register it with DriverManager
-	 * @param name 
+	 * Construct a new driver. This method is only needed for Class.getInstance()
 	 * 
 	 * @throws SQLException
 	 *             if a database error occurs.
