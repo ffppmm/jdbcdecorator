@@ -66,8 +66,7 @@ public abstract class PreparedStatementDecorator implements PreparedStatement {
 	/**
 	 * Initialisation of the PreparedStatementDecorator
 	 * 
-	 * @param preparedstatement the underlying PreparedStatement Object that should
-	 * be decorated.
+	 * @param preparedstatement the underlying PreparedStatement Object that is decorated.
 	 */
 	public PreparedStatementDecorator(java.sql.PreparedStatement preparedstatement) {
 		this.preparedstatement = preparedstatement;

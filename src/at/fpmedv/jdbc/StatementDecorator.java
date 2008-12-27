@@ -49,8 +49,7 @@ public abstract class StatementDecorator implements Statement {
 	/**
 	 * Initialisation of the StatementDecorator
 	 * 
-	 * @param statement the underlying Statement Object that should
-	 * be decorated.
+	 * @param statement the underlying Statement Object that is decorated.
 	 */
 	public StatementDecorator(java.sql.Statement statement) {
 		this.statement = statement;
