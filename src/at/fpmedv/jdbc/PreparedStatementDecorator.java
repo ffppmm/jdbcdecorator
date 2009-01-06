@@ -63,6 +63,8 @@ public abstract class PreparedStatementDecorator implements PreparedStatement {
 	 */
 	protected PreparedStatement preparedstatement;
 	
+
+	protected String sql = "";
 	/**
 	 * Initialisation of the PreparedStatementDecorator
 	 * 
@@ -70,6 +72,16 @@ public abstract class PreparedStatementDecorator implements PreparedStatement {
 	 */
 	public PreparedStatementDecorator(java.sql.PreparedStatement preparedstatement) {
 		this.preparedstatement = preparedstatement;
+	}
+
+	/**
+	 * Initialisation of the PreparedStatementDecorator with the sql String to execute
+	 * 
+	 * @param preparedstatement the underlying PreparedStatement Object that is decorated.
+	 */
+	public PreparedStatementDecorator(java.sql.PreparedStatement preparedstatement, String sql) {
+		this.preparedstatement = preparedstatement;
+		this.sql = sql;
 	}
 	
 	public void addBatch() throws SQLException {
