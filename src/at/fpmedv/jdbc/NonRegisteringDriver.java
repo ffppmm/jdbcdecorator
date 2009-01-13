@@ -38,7 +38,7 @@ public class NonRegisteringDriver implements java.sql.Driver {
 	/**
 	 * stores the prefix for the jdbc URL that identifies a jdbcdecorator url
 	 */
-	private static final String WRAPPER_URL_PREFIX = "jdbcdecorator:";
+	private static final String DECORATOR_URL_PREFIX = "jdbcdecorator:";
 	
 	/**
 	 * the underlying driver that is decorated
@@ -68,11 +68,11 @@ public class NonRegisteringDriver implements java.sql.Driver {
 	 * 
 	 * @param url the URL to transform
 	 * 
-	 * @see #WRAPPER_URL_PREFIX
+	 * @see #DECORATOR_URL_PREFIX
 	 */
 	private String transformUrl(String url) {
-		if (url.startsWith(WRAPPER_URL_PREFIX)) {
-			url = url.substring(WRAPPER_URL_PREFIX.length());
+		if (url.startsWith(DECORATOR_URL_PREFIX)) {
+			url = url.substring(DECORATOR_URL_PREFIX.length());
 		}
 		return url;
 	}
@@ -102,7 +102,7 @@ public class NonRegisteringDriver implements java.sql.Driver {
 	 *
 	 * @throws SQLException if a database access error occurs.
 	 * 
-	 * @see #WRAPPER_URL_PREFIX
+	 * @see #DECORATOR_URL_PREFIX
 	 */
 	private Driver getUnderlyingDriver(String url) throws SQLException {
 		if (driver != null)
@@ -131,11 +131,11 @@ public class NonRegisteringDriver implements java.sql.Driver {
 	 *                if a database-access error occurs
 	 * 
 	 * @see java.sql.Driver#acceptsURL
-	 * @see #WRAPPER_URL_PREFIX
+	 * @see #DECORATOR_URL_PREFIX
 	 */
 	public boolean acceptsURL(String url) throws SQLException {
 		// added check because we use in getUnderlyingDriver getDriver
-		if (url.startsWith(WRAPPER_URL_PREFIX)) {
+		if (url.startsWith(DECORATOR_URL_PREFIX)) {
 			return (getUnderlyingDriver(transformUrl(url)) != null);
 		} else {
 			return false;
