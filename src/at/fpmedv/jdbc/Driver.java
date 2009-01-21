@@ -22,8 +22,10 @@
 
 package at.fpmedv.jdbc;
 
+import java.io.FileInputStream;
 import java.sql.SQLException;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -71,8 +73,17 @@ public class Driver extends NonRegisteringDriver implements java.sql.Driver {
 	// Register ourselves with the DriverManager
 	//
 	static {
+		String configurationFileName = System.getProperty("jdbcdecorator.configuration");
+		boolean preloadKnownDrivers = true;
+		String connectionClassname = null;
+		String moreDrivers = null;
 		try {
-			String connectionClassname = System.getProperty("jdbcdecorator.connectionClassname");
+		// get Properties Filename
+			Properties properties = new Properties();
+			properties.load(new FileInputStream(configurationFileName));
+			connectionClassname = properties.getProperty("jdbcdecorator.connectionClassname");
+			preloadKnownDrivers = Boolean.parseBoolean(properties.getProperty("jdbcdecorator.preloadKnownDrivers"));
+			moreDrivers = properties.getProperty("jdbcdecorator.drivers");
 			if (connectionClassname != null) {
 				// initialize ConnectionDecorator implementation
 				try {
@@ -85,42 +96,49 @@ public class Driver extends NonRegisteringDriver implements java.sql.Driver {
 				System.out.println("[jdbcdecorator] system property jdbcdecorator.connectionClassname is null");
 				System.out.println("[jdbcdecorator] not initialized");
 			}
+		} catch (Exception e) {
+			System.out.println("[jdbcdecorator] error loading config file (" + configurationFileName + ": " + e);
+		}
+		try {
 			java.sql.Driver driver2Register = new Driver();
 			java.sql.DriverManager.registerDriver(driver2Register);
 			System.out.println("[jdbcdecorator] registered myself");
 			
-			// The Set of drivers that the jdbcwrapper driver will try
-			// preload at instantiation time.
 			Set<String> subDrivers = new TreeSet<String>();
-			subDrivers.add("com.mysql.jdbc.Driver");
-			subDrivers.add("org.postgresql.Driver");
 
-			subDrivers.add("oracle.jdbc.driver.OracleDriver");
-			subDrivers.add("com.sybase.jdbc2.jdbc.SybDriver");
-			subDrivers.add("net.sourceforge.jtds.jdbc.Driver");
+			// The Set of drivers that the jdbcwrapper driver will try
+			// preload at instantiation time if preloadKnownDrivers is enabled
+			if (preloadKnownDrivers) {
+				subDrivers.add("com.mysql.jdbc.Driver");
+				subDrivers.add("org.postgresql.Driver");
+	
+				subDrivers.add("oracle.jdbc.driver.OracleDriver");
+				subDrivers.add("com.sybase.jdbc2.jdbc.SybDriver");
+				subDrivers.add("net.sourceforge.jtds.jdbc.Driver");
+	
+				// MS driver for Sql Server 2000
+				subDrivers.add("com.microsoft.jdbc.sqlserver.SQLServerDriver");
+	
+				// MS driver for Sql Server 2005
+				subDrivers.add("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+	
+				subDrivers.add("weblogic.jdbc.sqlserver.SQLServerDriver");
+				subDrivers.add("com.informix.jdbc.IfxDriver");
+				subDrivers.add("org.apache.derby.jdbc.ClientDriver");
+				subDrivers.add("org.apache.derby.jdbc.EmbeddedDriver");
+				subDrivers.add("org.hsqldb.jdbcDriver");
+				subDrivers.add("org.h2.Driver");
+			}
 
-			// MS driver for Sql Server 2000
-			subDrivers.add("com.microsoft.jdbc.sqlserver.SQLServerDriver");
-
-			// MS driver for Sql Server 2005
-			subDrivers.add("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-
-			subDrivers.add("weblogic.jdbc.sqlserver.SQLServerDriver");
-			subDrivers.add("com.informix.jdbc.IfxDriver");
-			subDrivers.add("org.apache.derby.jdbc.ClientDriver");
-			subDrivers.add("org.apache.derby.jdbc.EmbeddedDriver");
-			subDrivers.add("org.hsqldb.jdbcDriver");
-			subDrivers.add("org.h2.Driver");
-
-			// look for additional driver specified in system properties
-			String moreDrivers = System.getProperty("jdbcdecorator.drivers");
-
+			// add drivers specified in configuration
 			if (moreDrivers != null) {
 				String[] moreDriversArr = moreDrivers.split(",");
 				for (int i = 0; i < moreDriversArr.length; i++) {
 					subDrivers.add(moreDriversArr[i]);
 				}
 			}
+			
+			// register subdrivers
 			String driverClass;
 			for (Iterator i = subDrivers.iterator(); i.hasNext();) {
 				driverClass = (String) i.next();
