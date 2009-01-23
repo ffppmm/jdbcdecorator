@@ -73,6 +73,8 @@ public class Driver extends NonRegisteringDriver implements java.sql.Driver {
 	// Register ourselves with the DriverManager
 	//
 	static {
+		String buildDate = "__builddate__";
+		String version = "__version__";
 		String configurationFileName = System.getProperty("jdbcdecorator.configuration");
 		boolean preloadKnownDrivers = true;
 		String connectionClassname = null;
@@ -102,7 +104,7 @@ public class Driver extends NonRegisteringDriver implements java.sql.Driver {
 		try {
 			java.sql.Driver driver2Register = new Driver();
 			java.sql.DriverManager.registerDriver(driver2Register);
-			System.out.println("[jdbcdecorator] registered myself");
+			System.out.println("[jdbcdecorator] registered myself Version: " + version + " build on: " + buildDate);
 			
 			Set<String> subDrivers = new TreeSet<String>();
 
