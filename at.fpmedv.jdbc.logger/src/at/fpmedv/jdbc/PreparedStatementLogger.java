@@ -21,7 +21,6 @@
  */
 package at.fpmedv.jdbc;
 
-import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
