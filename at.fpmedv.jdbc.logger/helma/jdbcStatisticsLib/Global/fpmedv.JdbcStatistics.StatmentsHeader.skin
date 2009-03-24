@@ -16,7 +16,7 @@
 <body>
 <h1>Global Statistics</h1>
 <div>Logging started: <% param.loggingStarted %></div>
-<div>Statements / time elapsed (in seconds): <% param.statementsPerSecond %></div>
+<div>Currently we issue <% param.statementsPerSecond %> Statements per second</div>
 <table id="globalStatistics" class="fpmedv-tablesorter"><thead><tr><th>Type</th><th>count</th><th>Millis</th><th>Average</th></tr></thead>
 <tbody>
 <tr><td>Selects</td><td><% param.selectsTotalCount %></td><td><% param.selectsTotalMillis %></td><td><% param.selectsTotalAverage %></td></tr>

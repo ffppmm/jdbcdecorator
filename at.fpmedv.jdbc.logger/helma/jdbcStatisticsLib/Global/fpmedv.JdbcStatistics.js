@@ -39,6 +39,9 @@ fpmedv.JdbcStatistics.renderStatistics = function () {
    param.loggingStartedSeconds = param.loggingStartedMillis / 100;
    param.statementsPerSecond = (param.nocatTotalCount + param.selectsTotalCount + param.updatesTotalCount + param.insertsTotalCount + param.deletesTotalCount) / param.loggingStartedSeconds;
    
+   // convert to string
+   param.loggingStarted = param.loggingStarted.toString();
+   
    renderSkin("fpmedv.JdbcStatistics.StatmentsHeader", param);
    while (statementKeysIterator.hasNext()) {
       param.key = statementKeysIterator.next();
