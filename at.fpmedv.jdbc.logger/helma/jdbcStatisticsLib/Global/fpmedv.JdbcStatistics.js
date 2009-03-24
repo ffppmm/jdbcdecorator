@@ -22,6 +22,9 @@ fpmedv.JdbcStatistics.renderStatistics = function () {
    param.deletesTotalCount = stats.getCount(stats.DELETE);
    param.deletesTotalMillis = stats.getMillis(stats.DELETE);
    param.deletesTotalAverage = param.deletesTotalMillis / param.deletesTotalCount;
+
+   param.totalCount = param.nocatTotalCount + param.selectsTotalCount + param.updatesTotalCount + param.insertsTotalCount + param.deletesTotalCount;
+
    param.loggingEnabled = stats.isLoggingEnabled();
    param.errorCount = stats.getErrorCount();
 
@@ -37,7 +40,7 @@ fpmedv.JdbcStatistics.renderStatistics = function () {
    param.now = new Date();
    param.loggingStartedMillis = param.now - param.loggingStarted.getTime();
    param.loggingStartedSeconds = param.loggingStartedMillis / 100;
-   param.statementsPerSecond = (param.nocatTotalCount + param.selectsTotalCount + param.updatesTotalCount + param.insertsTotalCount + param.deletesTotalCount) / param.loggingStartedSeconds;
+   param.statementsPerSecond = param.totalCount / param.loggingStartedSeconds;
    
    // convert to string
    param.loggingStarted = param.loggingStarted.toString();
