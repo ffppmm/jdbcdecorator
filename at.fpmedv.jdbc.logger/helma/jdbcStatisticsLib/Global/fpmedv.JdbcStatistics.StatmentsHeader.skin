@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>JDBC Statistics</title>
+<script src="http://www.fpmedv.at/fileadmin/js/jquery-1.2.6.min.js" type="text/javascript"></script>
+<script src="http://www.fpmedv.at/fileadmin/js/jquery.tablesorter.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="http://www.fpmedv.at/fileadmin/css/blue.css" />
+<style type="text/css">
+.small {
+   font-size: 0.8em;
+   color: #444444;
+}
+</style>
+</head>
+<body>
+<h1>Global Statistics</h1>
+<table id="globalStatistics" class="fpmedv-tablesorter"><thead><tr><th>Type</th><th>count</th><th>Millis</th><th>Average</th></tr></thead>
+<tbody>
+<tr><td>Selects</td><td><% param.selectsTotalCount %></td><td><% param.selectsTotalMillis %></td><td><% param.selectsTotalAverage %></td></tr>
+<tr><td>Updates</td><td><% param.updatesTotalCount %></td><td><% param.updatesTotalMillis %></td><td><% param.updatesTotalAverage %></td></tr>
+<tr><td>Inserts</td><td><% param.insertsTotalCount %></td><td><% param.insertsTotalMillis %></td><td><% param.insertsTotalAverage %></td></tr>
+<tr><td>Deletes</td><td><% param.deletesTotalCount %></td><td><% param.deletesTotalMillis %></td><td><% param.deletesTotalAverage %></td></tr>
+<tr><td>Not categorized</td><td><% param.nocatTotalCount %></td><td><% param.nocatTotalMillis %></td><td><% param.nocatTotalAverage %></td></tr>
+</tbody>
+</table>
+<h1>Individual Statement Statistics (<% param.statementsSize %>) <a href="#asterix"><sup>*</sup></a></h1>
+<table id="statements" class="fpmedv-tablesorter"><thead><tr><th>Millis</th><th>Counter</th><th>Average</th><th>SQL</th></tr></thead>
+<tbody>
+

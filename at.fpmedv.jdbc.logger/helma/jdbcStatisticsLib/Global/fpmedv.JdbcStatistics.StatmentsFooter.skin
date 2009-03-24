@@ -1,0 +1,29 @@
+</tbody></table>
+<script type="text/javascript">
+var ts = $.tablesorter;
+ts.addParser({
+   id: "fpmedv.integer",
+   is: function(s) {
+      return ((parseInt(s) + " ") != "NaN ");
+   },
+   format: function(s) {
+      return $.tablesorter.formatInt(s);
+   },
+      type: "numeric"
+});
+
+$(document).ready(function(){
+   $("#globalStatistics").tablesorter();
+   $("#statements").tablesorter({
+      // sort on the first column order desc
+      sortList: [[0,1]]
+      
+   });
+ });
+</script>
+<a name="asterix"></a>
+<p class="small"><sup>*</sup> <strong><% param.errorCount %></strong> Errors occurred while normalizing statements. These statements are counted in the total statistics but are not shown in the individual Statistics.</p>
+<p class="small"><strong><% param.statementStatisticsOverflow %></strong> Statement are only counted in the total statistics but not shown in the individual Statistics, because of the <strong><% param.maxStatements %></strong> limit for storing individual statements.</p>
+</body>
+</html>
+
