@@ -18,7 +18,7 @@
 <div>Logging started: <% param.loggingStarted %></div>
 <div>Seconds running: <% param.loggingStartedSeconds %></div>
 <div>Total statements count: <% param.totalCount %></div>
-<div>Currently we issue <% param.statementsPerSecond %> Statements per second (average: total running time / total statement count)</div>
+<div>Currently we issue <% param.statementsPerSecond %> Statements per second (average: seconds running / total statement count)</div>
 <table id="globalStatistics" class="fpmedv-tablesorter"><thead><tr><th>Type</th><th>count</th><th>Millis</th><th>Average</th></tr></thead>
 <tbody>
 <tr><td>Selects</td><td><% param.selectsTotalCount %></td><td><% param.selectsTotalMillis %></td><td><% param.selectsTotalAverage %></td></tr>
