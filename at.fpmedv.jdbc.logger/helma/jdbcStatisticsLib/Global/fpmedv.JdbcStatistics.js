@@ -39,7 +39,7 @@ fpmedv.JdbcStatistics.renderStatistics = function () {
    // get millis
    param.now = new Date();
    param.loggingStartedMillis = param.now - param.loggingStarted.getTime();
-   param.loggingStartedSeconds = param.loggingStartedMillis / 100;
+   param.loggingStartedSeconds = param.loggingStartedMillis / 1000;
    param.statementsPerSecond = param.totalCount / param.loggingStartedSeconds;
    
    // convert to string
