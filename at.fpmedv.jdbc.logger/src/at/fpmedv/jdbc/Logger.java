@@ -23,6 +23,7 @@ package at.fpmedv.jdbc;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -171,6 +172,11 @@ public class Logger {
 	 */
 	public static final int DELETE = 4;
 
+	/**
+	 * logging has started by this date
+	 */
+	private final Date loggingStarted = new Date();
+	
 	/**
 	 * Holds the patterns and replacement Strings for sql statment normalization
 	 * 
@@ -444,5 +450,14 @@ public class Logger {
 	 */
 	public long getStatementStatisticsOverflow() {
 		return statementStatisticsOverflow;
+	}
+
+	/**
+	 * a getter
+	 * 
+	 * @return returns when logging has started
+	 */
+	public Date getLoggingStarted() {
+		return loggingStarted;
 	}
 }
