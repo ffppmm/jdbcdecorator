@@ -32,6 +32,13 @@ fpmedv.JdbcStatistics.renderStatistics = function () {
    param.maxStatements = stats.getMaxStatements();
    param.statementStatisticsOverflow = stats.getStatementStatisticsOverflow();
    
+   param.loggingStarted = stats.getLoggingStarted();
+   // get millis
+   param.now = new Date();
+   param.loggingStartedMillis = param.now - param.loggingStarted.getTime();
+   param.loggingStartedSeconds = param.loggingStartedMillis / 100;
+   param.statementsPerSecond = (param.nocatTotalCount + param.selectsTotalCount + param.updatesTotalCount + param.insertsTotalCount + param.deletesTotalCount) / param.loggingStartedSeconds;
+   
    renderSkin("fpmedv.JdbcStatistics.StatmentsHeader", param);
    while (statementKeysIterator.hasNext()) {
       param.key = statementKeysIterator.next();
@@ -39,6 +46,7 @@ fpmedv.JdbcStatistics.renderStatistics = function () {
       param.count = stmt.getCount();
       param.millis = stmt.getMillis();
       param.average = param.millis / param.count;
+      param.statementType = param.key.substring(0, 1).toUpperCase();
       renderSkin("fpmedv.JdbcStatistics.StatmentsRow", param);
    }
    renderSkin("fpmedv.JdbcStatistics.StatmentsFooter", param);

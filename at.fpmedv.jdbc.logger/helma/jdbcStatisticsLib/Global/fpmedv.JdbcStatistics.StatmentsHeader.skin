@@ -15,6 +15,8 @@
 </head>
 <body>
 <h1>Global Statistics</h1>
+<div>Logging started: <% param.loggingStarted %></div>
+<div>Statements / time elapsed (in seconds): <% param.statementsPerSecond %></div>
 <table id="globalStatistics" class="fpmedv-tablesorter"><thead><tr><th>Type</th><th>count</th><th>Millis</th><th>Average</th></tr></thead>
 <tbody>
 <tr><td>Selects</td><td><% param.selectsTotalCount %></td><td><% param.selectsTotalMillis %></td><td><% param.selectsTotalAverage %></td></tr>
@@ -25,6 +27,5 @@
 </tbody>
 </table>
 <h1>Individual Statement Statistics (<% param.statementsSize %>) <a href="#asterix"><sup>*</sup></a></h1>
-<table id="statements" class="fpmedv-tablesorter"><thead><tr><th>Millis</th><th>Counter</th><th>Average</th><th>SQL</th></tr></thead>
+<table id="statements" class="fpmedv-tablesorter"><thead><tr><th>Millis</th><th>Counter</th><th>Average</th><th>Type</th><th>SQL</th></tr></thead>
 <tbody>
-
