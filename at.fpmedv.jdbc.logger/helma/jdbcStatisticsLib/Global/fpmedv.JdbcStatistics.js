@@ -24,6 +24,7 @@ fpmedv.JdbcStatistics.renderStatistics = function () {
    param.deletesTotalAverage = param.deletesTotalMillis / param.deletesTotalCount;
 
    param.totalCount = param.nocatTotalCount + param.selectsTotalCount + param.updatesTotalCount + param.insertsTotalCount + param.deletesTotalCount;
+   param.totalMillis = param.nocatTotalCount + param.selectsTotalMillis + param.updatesTotalMillis + param.insertsTotalMillis + param.deletesTotalMillis;
 
    param.loggingEnabled = stats.isLoggingEnabled();
    param.errorCount = stats.getErrorCount();
@@ -51,7 +52,9 @@ fpmedv.JdbcStatistics.renderStatistics = function () {
       var stmt = statements.get(param.key);
       param.count = stmt.getCount();
       param.millis = stmt.getMillis();
-      param.average = param.millis / param.count;
+      param.average = parseInt((param.millis / param.count), 10);
+      param.percentageMillis = parseInt(param.millis / (param.totalMillis / 100), 10);
+      param.percentageCount = parseInt(param.count / (param.totalCount / 100), 10);
       param.statementType = param.key.substring(0, 1).toUpperCase();
       renderSkin("fpmedv.JdbcStatistics.StatmentsRow", param);
    }

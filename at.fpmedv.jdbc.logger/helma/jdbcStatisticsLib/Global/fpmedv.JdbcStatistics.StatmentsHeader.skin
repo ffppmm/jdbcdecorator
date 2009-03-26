@@ -19,7 +19,7 @@
 <div>Seconds running: <% param.loggingStartedSeconds %></div>
 <div>Total statement count: <% param.totalCount %></div>
 <div>Currently we issue <% param.statementsPerSecond %> Statements per second (average: seconds running / total statement count)</div>
-<table id="globalStatistics" class="fpmedv-tablesorter"><thead><tr><th>Type</th><th>count</th><th>Millis</th><th>Average</th></tr></thead>
+<table id="globalStatistics" class="fpmedv-tablesorter"><thead><tr><th>Type</th><th>Count</th><th>Millis</th><th>Average</th></tr></thead>
 <tbody>
 <tr><td>Selects</td><td><% param.selectsTotalCount %></td><td><% param.selectsTotalMillis %></td><td><% param.selectsTotalAverage %></td></tr>
 <tr><td>Updates</td><td><% param.updatesTotalCount %></td><td><% param.updatesTotalMillis %></td><td><% param.updatesTotalAverage %></td></tr>
@@ -29,5 +29,5 @@
 </tbody>
 </table>
 <h1>Individual Statement Statistics (<% param.statementsSize %>) <a href="#asterix"><sup>*</sup></a></h1>
-<table id="statements" class="fpmedv-tablesorter"><thead><tr><th>Millis</th><th>Counter</th><th>Average</th><th>Type</th><th>SQL</th></tr></thead>
+<table id="statements" class="fpmedv-tablesorter"><thead><tr><th>Count</th><th>Millis</th><th>Average</th><th>% count</th><th>% millis</th><th>Type</th><th>SQL</th></tr></thead>
 <tbody>
