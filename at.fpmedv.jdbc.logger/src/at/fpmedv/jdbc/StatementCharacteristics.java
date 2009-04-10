@@ -21,6 +21,8 @@
  */
 package at.fpmedv.jdbc;
 
+import java.util.Date;
+
 /**
  * 
  * Class for holding the statistics of a SQL statement.
@@ -40,6 +42,8 @@ public class StatementCharacteristics {
 	 */
 	private int count = 1;
 	
+	private Date lastCommit = new Date();
+	
 	public StatementCharacteristics(long millis) {
 		this.millis = millis;
 	}
@@ -58,5 +62,13 @@ public class StatementCharacteristics {
 	
 	public int getCount() {
 		return count;
+	}
+
+	public Date getLastCommit() {
+		return lastCommit;
+	}
+
+	public void setLastCommit(Date lastCommit) {
+		this.lastCommit = lastCommit;
 	}
 }

@@ -56,6 +56,7 @@ fpmedv.JdbcStatistics.renderStatistics = function () {
       param.percentageMillis = parseInt(param.millis / (param.totalMillis / 100), 10);
       param.percentageCount = parseInt(param.count / (param.totalCount / 100), 10);
       param.statementType = param.key.substring(0, 1).toUpperCase();
+      param.lastCommit = stmt.getLastCommit();
       renderSkin("fpmedv.JdbcStatistics.StatmentsRow", param);
    }
    renderSkin("fpmedv.JdbcStatistics.StatmentsFooter", param);

@@ -184,6 +184,10 @@ public class Logger {
 	 */
 	private ArrayList<RegExpReplacementContainer> replacePatterns = new ArrayList<RegExpReplacementContainer>();
 
+	private Date dateLastRendered;
+
+	private long dateLastRenderedTime = 0L;
+
 	/**
 	 * opens properties file and reads configuration values
 	 */
@@ -348,6 +352,7 @@ public class Logger {
 				StatementCharacteristics currentStatementStatistics = (StatementCharacteristics) statementStatistics.get(normalizedSql);
 				currentStatementStatistics.increaseCount();
 				currentStatementStatistics.increaseMillis(millis);
+				currentStatementStatistics.setLastCommit(getDate());
 			} else {
 				if (statementStatistics.size() < maxStatements){
 					StatementCharacteristics newStatementStatistics = new StatementCharacteristics(millis);
@@ -356,6 +361,14 @@ public class Logger {
 					statementStatisticsOverflow++;
 			}
 		}
+	}
+
+	private Date getDate() {
+        if ((System.currentTimeMillis() - 1000) > dateLastRenderedTime) {
+	        dateLastRendered = new Date();
+	        dateLastRenderedTime = dateLastRendered.getTime();
+        }
+        return dateLastRendered;
 	}
 
 	/**
