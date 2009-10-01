@@ -175,7 +175,7 @@ public class Logger {
 	/**
 	 * logging has started by this date
 	 */
-	private final Date loggingStarted = new Date();
+	private Date loggingStarted = new Date();
 	
 	/**
 	 * Holds the patterns and replacement Strings for sql statment normalization
@@ -192,29 +192,7 @@ public class Logger {
 	 * opens properties file and reads configuration values
 	 */
 	private Logger() {
-		try {
-			properties.load(new FileInputStream(CONFIGURATION_FILE_NAME));
-			maxStatements = Integer.parseInt(properties.getProperty(Logger.JDBC_LOGGER_PREFIX + "maxStatementStatistics"));
-			loggingEnabled = Boolean.parseBoolean(properties.getProperty(Logger.JDBC_LOGGER_PREFIX + "loggingEnabled"));
-			displayFullStackTrace = Boolean.parseBoolean(properties.getProperty(Logger.JDBC_LOGGER_PREFIX + "displayFullStackTrace"));
-			String baseNormalizeProperty = Logger.JDBC_LOGGER_PREFIX + "normalize.";
-			int y = 0;
-			while (properties.getProperty(baseNormalizeProperty + y + ".pattern") != null && properties.getProperty(baseNormalizeProperty + y + ".replacement") != null) {
-				try {
-					boolean mayBeDisabled = properties.getProperty(baseNormalizeProperty + y + ".doNotDisable") == "true" ? true : false;
-					RegExpReplacementContainer patternReplacement = new RegExpReplacementContainer(properties.getProperty(baseNormalizeProperty + y + ".pattern"), properties.getProperty(baseNormalizeProperty + y + ".replacement"), true, mayBeDisabled);
-
-					logger[DEFAULT].trace("Adding " + patternReplacement.getRegexp() + " => " + patternReplacement.getReplacement());
-					replacePatterns.add(patternReplacement);
-				} catch(PatternSyntaxException e) {
-					logger[DEFAULT].error("Could not compile pattern: " + properties.getProperty(baseNormalizeProperty + y), e);
-				}
-				y++;
-			}
-			logger[DEFAULT].info(JDBC_LOGGER_PREFIX + VERSION + " build on " + BUILD_DATE + " loaded.");
-		} catch (Exception e) {
-			logger[DEFAULT].error("Error reading properties file: " + CONFIGURATION_FILE_NAME + ". Using defaults.", e);
-		}
+		init();
 	}
 
 	/**
@@ -472,5 +450,53 @@ public class Logger {
 	 */
 	public Date getLoggingStarted() {
 		return loggingStarted;
+	}
+
+	/**
+	 * initializes the Logger
+	 */
+	public void init() {
+		try {
+			properties.load(new FileInputStream(CONFIGURATION_FILE_NAME));
+			maxStatements = Integer.parseInt(properties.getProperty(Logger.JDBC_LOGGER_PREFIX + "maxStatementStatistics"));
+			loggingEnabled = Boolean.parseBoolean(properties.getProperty(Logger.JDBC_LOGGER_PREFIX + "loggingEnabled"));
+			displayFullStackTrace = Boolean.parseBoolean(properties.getProperty(Logger.JDBC_LOGGER_PREFIX + "displayFullStackTrace"));
+			String baseNormalizeProperty = Logger.JDBC_LOGGER_PREFIX + "normalize.";
+			int y = 0;
+			while (properties.getProperty(baseNormalizeProperty + y + ".pattern") != null && properties.getProperty(baseNormalizeProperty + y + ".replacement") != null) {
+				try {
+					boolean mayBeDisabled = properties.getProperty(baseNormalizeProperty + y + ".doNotDisable") == "true" ? true : false;
+					RegExpReplacementContainer patternReplacement = new RegExpReplacementContainer(properties.getProperty(baseNormalizeProperty + y + ".pattern"), properties.getProperty(baseNormalizeProperty + y + ".replacement"), true, mayBeDisabled);
+
+					logger[DEFAULT].trace("Adding " + patternReplacement.getRegexp() + " => " + patternReplacement.getReplacement());
+					replacePatterns.add(patternReplacement);
+				} catch(PatternSyntaxException e) {
+					logger[DEFAULT].error("Could not compile pattern: " + properties.getProperty(baseNormalizeProperty + y), e);
+				}
+				y++;
+			}
+			logger[DEFAULT].info(JDBC_LOGGER_PREFIX + VERSION + " build on " + BUILD_DATE + " init.");
+		} catch (Exception e) {
+			logger[DEFAULT].error("Error reading properties file: " + CONFIGURATION_FILE_NAME + ". Using defaults.", e);
+		}		
+	}
+	
+	/**
+	 * sets defaults for all Statistics
+	 */
+	public void resetStatistics() {
+		synchronized (Logger.class) {
+			loggingEnabled = true;
+			maxStatements = 400;
+			for (int i = 0; i < 5; i++) {
+				count[i] = 0L;
+				millis[i] = 0L;
+			}
+			errorCount = 0L;
+			displayFullStackTrace = false;
+			statementStatistics = new HashMap<String, StatementCharacteristics>();
+			statementStatisticsOverflow = 0L;
+			loggingStarted = new Date();
+		}
 	}
 }
