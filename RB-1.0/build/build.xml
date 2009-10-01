@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="JdbcLogger" default="usage" basedir=".">
+<project name="JdbcDecorator" default="usage" basedir=".">
 <!-- Thanks to Hannes Wallnöfer who wrote the helma ant build script -->
 	
     <!-- =================================================================== -->
@@ -8,9 +8,9 @@
     <!-- =================================================================== -->
     <target name="init">
         <property name="Name" value="Jdbc Logger"/>
-        <property name="year" value="2009-${year}"/>
-        <property name="version" value="0.1"/>
-        <property name="project" value="jdbc-logger"/>
+        <property name="year" value="2009"/>
+        <property name="version" value="1.0"/>
+        <property name="project" value="jdbc-decorator"/>
 
         <property name="home.dir" value=".."/>
 
@@ -30,12 +30,6 @@
         <property name="debug" value="on"/>
         <property name="optimize" value="on"/>
         <property name="deprecation" value="off"/>
-
-        <path id="build.class.path">
-            <fileset dir="${home.dir}/lib">
-                <include name="*.jar" />
-            </fileset>
-        </path>
 
         <tstamp/>
 
@@ -81,9 +75,9 @@
         <copy todir="${build.work.src}" overwrite="true">
             <fileset dir="${build.src}" includes="**/*.java"/>
         </copy>
-        <replace file="${build.work.src}/at/fpmedv/jdbc/Logger.java"
+        <replace file="${build.work.src}/at/fpmedv/jdbc/Driver.java"
             token="__builddate__" value="${TODAY}"/>
-        <replace file="${build.work.src}/at/fpmedv/jdbc/Logger.java"
+        <replace file="${build.work.src}/at/fpmedv/jdbc/Driver.java"
             token="__version__" value="${version}"/>
         <javac srcdir="${build.work.src}"
             source="1.5"
@@ -93,7 +87,6 @@
             deprecation="${deprecation}"
             optimize="${optimize}"
             includeAntRuntime="no">
-            <classpath refid="build.class.path" />
         </javac>
         <delete dir="${build.work.src}"/>
     </target>
@@ -125,7 +118,6 @@
             windowtitle="${Name} ${version} API"
             doctitle="${Name} ${version} API"
             bottom="Copyright &#169; ${year} fpmedv.at. All Rights Reserved."
-            classpathref="build.class.path"
         />
     </target>
 
@@ -166,8 +158,6 @@
         <tar tarfile="${build.dist}/${filename}.tar">
             <tarfileset dir="${home.dir}" prefix="${filename}">
                 <include name="docs/**"/>
-                <include name="lib/**"/>
-                <include name="helma/**"/>
                 <include name="LICENSE"/>
                 <include name="README"/>
                 <include name="${jar.name}.jar" />
@@ -187,8 +177,6 @@
         <zip zipfile="${build.dist}/${filename}.zip">
             <zipfileset dir="${home.dir}" prefix="${filename}">
                 <include name="docs/**"/>
-                <include name="lib/**"/>
-                <include name="helma/**"/>
                 <include name="LICENSE"/>
                 <include name="README"/>
                 <include name="${jar.name}.jar" />
@@ -207,9 +195,7 @@
             <tarfileset dir="${home.dir}" prefix="${filename}">
                 <include name="src/**"/>
                 <include name="build/**"/>
-                <include name="lib/**"/>
                 <include name="docs/**"/>
-                <include name="helma/**"/>
                 <include name="LICENSE"/>
                 <include name="README"/>
             	<exclude name="**/.svn**"/>
@@ -230,9 +216,7 @@
             <zipfileset dir="${home.dir}" prefix="${filename}">
               <include name="src/**"/>
               <include name="build/**"/>
-              <include name="lib/**"/>
               <include name="docs/**"/>
-              <include name="helma/**"/>
               <include name="LICENSE"/>
               <include name="README"/>
               <exclude name="**/.svn**"/>
