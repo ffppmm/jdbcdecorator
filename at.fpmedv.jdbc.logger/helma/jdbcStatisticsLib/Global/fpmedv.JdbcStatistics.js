@@ -26,7 +26,7 @@ fpmedv.JdbcStatistics.renderStatistics = function () {
    param.totalCount = param.nocatTotalCount + param.selectsTotalCount + param.updatesTotalCount + param.insertsTotalCount + param.deletesTotalCount;
    param.totalMillis = param.nocatTotalCount + param.selectsTotalMillis + param.updatesTotalMillis + param.insertsTotalMillis + param.deletesTotalMillis;
 
-   param.loggingEnabled = stats.isLoggingEnabled();
+   param.loggingEnabled = stats.isLoggingEnabled() ? "enabled" : "disabled";
    param.errorCount = stats.getErrorCount();
 
    statements = stats.getNormalizedStatements();

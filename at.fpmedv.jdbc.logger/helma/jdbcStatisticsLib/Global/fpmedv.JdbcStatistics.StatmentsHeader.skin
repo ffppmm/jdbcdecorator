@@ -11,15 +11,26 @@
    font-size: 0.8em;
    color: #444444;
 }
+.enabled, .disabled {
+   color: white;
+   font-weight: bold;
+}
+.enabled {
+   background: green;
+}
+.disabled {
+   background: red;
+}
 </style>
 </head>
 <body>
 <h1>Global Statistics</h1>
+<div class="<% param.loggingEnabled %>">Logging <% param.loggingEnabled %></div>
 <div>Logging started: <% param.loggingStarted %></div>
 <div>Seconds running: <% param.loggingStartedSeconds %></div>
 <div>Total statement count: <% param.totalCount %></div>
 <div>Total millis count: <% param.totalMillis %></div>
-<div>Currently we issue <% param.statementsPerSecond %> Statements per second (average: seconds running / total statement count)</div>
+<div>Currently we issue <% param.statementsPerSecond %> Statements per second (average: total statement count / seconds running)</div>
 <table id="globalStatistics" class="fpmedv-tablesorter"><thead><tr><th>Type</th><th>Count</th><th>Millis</th><th>Average</th></tr></thead>
 <tbody>
 <tr><td>Selects</td><td><% param.selectsTotalCount %></td><td><% param.selectsTotalMillis %></td><td><% param.selectsTotalAverage %></td></tr>
