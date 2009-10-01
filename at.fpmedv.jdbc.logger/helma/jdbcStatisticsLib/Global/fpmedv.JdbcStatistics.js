@@ -61,3 +61,8 @@ fpmedv.JdbcStatistics.renderStatistics = function () {
    }
    renderSkin("fpmedv.JdbcStatistics.StatmentsFooter", param);
 };
+
+fpmedv.JdbcStatistics.resetStatistics = function () {
+	var logger = Packages.at.fpmedv.jdbc.Logger.getInstance();
+	logger.resetStatistics();
+};
