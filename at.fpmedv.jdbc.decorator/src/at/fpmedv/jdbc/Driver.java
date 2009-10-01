@@ -23,6 +23,7 @@
 package at.fpmedv.jdbc;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Properties;
@@ -79,6 +80,8 @@ public class Driver extends NonRegisteringDriver implements java.sql.Driver {
 		boolean preloadKnownDrivers = true;
 		String connectionClassname = null;
 		String moreDrivers = null;
+		
+		// try to load properties file and overwrite defaults
 		try {
 		// get Properties Filename
 			Properties properties = new Properties();
@@ -91,20 +94,20 @@ public class Driver extends NonRegisteringDriver implements java.sql.Driver {
 				try {
 					NonRegisteringDriver.connectionClass = Class.forName(connectionClassname);
 				} catch (ClassNotFoundException e) {
-					System.out.println("[jdbcdecorator] not initialized: " + e);
+					System.out.println(NonRegisteringDriver.DECORATOR_LOGGING_PREFIX + "not initialized: " + e);
 					e.printStackTrace();
 				}
 			} else {
-				System.out.println("[jdbcdecorator] system property jdbcdecorator.connectionClassname is null");
-				System.out.println("[jdbcdecorator] not initialized");
+				System.out.println(NonRegisteringDriver.DECORATOR_LOGGING_PREFIX + "system property jdbcdecorator.connectionClassname is null");
+				System.out.println(NonRegisteringDriver.DECORATOR_LOGGING_PREFIX + "not initialized");
 			}
-		} catch (Exception e) {
-			System.out.println("[jdbcdecorator] error loading config file (" + configurationFileName + ": " + e);
+		} catch (IOException e) {
+			System.out.println(NonRegisteringDriver.DECORATOR_LOGGING_PREFIX + "error loading config file (" + configurationFileName + ": " + e);
 		}
 		try {
 			java.sql.Driver driver2Register = new Driver();
 			java.sql.DriverManager.registerDriver(driver2Register);
-			System.out.println("[jdbcdecorator] registered myself Version: " + version + " build on: " + buildDate);
+			System.out.println(NonRegisteringDriver.DECORATOR_LOGGING_PREFIX + "registered myself Version: " + version + " build on: " + buildDate);
 			
 			Set<String> subDrivers = new TreeSet<String>();
 
@@ -141,16 +144,26 @@ public class Driver extends NonRegisteringDriver implements java.sql.Driver {
 			}
 			
 			// register subdrivers
-			String driverClass;
-			for (Iterator i = subDrivers.iterator(); i.hasNext();) {
-				driverClass = (String) i.next();
+			String driverClassName;
+			for (Iterator<String> i = subDrivers.iterator(); i.hasNext();) {
+				driverClassName = i.next();
 				try {
-					Class.forName(driverClass).newInstance();
-					System.out.println("[jdbcdecorator] found driver: " + driverClass);
-				} catch (Throwable c) {}
+					Class.forName(driverClassName).newInstance();
+					System.out.println(NonRegisteringDriver.DECORATOR_LOGGING_PREFIX + "found driver: " + driverClassName);
+				} catch (ClassNotFoundException e) {
+					// do nothing because we just try to find the correct driver					
+				} catch (InstantiationException e) {
+					// may be a problem
+					System.out.println(NonRegisteringDriver.DECORATOR_LOGGING_PREFIX + "InstantiationException of " + driverClassName);
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// may be a problem
+					System.out.println(NonRegisteringDriver.DECORATOR_LOGGING_PREFIX + "IllegalAccessException of " + driverClassName);
+					e.printStackTrace();
+				}
 			}			
-		} catch (SQLException E) {
-			throw new RuntimeException("[jdbcdecorator] Can't register myself!");
+		} catch (SQLException e) {
+			throw new RuntimeException(NonRegisteringDriver.DECORATOR_LOGGING_PREFIX + "Can't register myself!");
 		}
 	}
 

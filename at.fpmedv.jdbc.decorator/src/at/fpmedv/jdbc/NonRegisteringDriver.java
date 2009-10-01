@@ -38,8 +38,13 @@ public class NonRegisteringDriver implements java.sql.Driver {
 	/**
 	 * stores the prefix for the jdbc URL that identifies a jdbcdecorator url
 	 */
-	private static final String DECORATOR_URL_PREFIX = "jdbcdecorator:";
+	protected static final String DECORATOR_URL_PREFIX = "jdbcdecorator:";
 	
+	/**
+	 * stores the prefix for the jdbcdecorator output logging
+	 */
+	protected static final String DECORATOR_LOGGING_PREFIX = "[jdbcdecorator] ";
+
 	/**
 	 * the underlying driver that is decorated
 	 */
@@ -168,8 +173,13 @@ public class NonRegisteringDriver implements java.sql.Driver {
 					ConnectionDecorator underlyingConnection = (ConnectionDecorator) connectionClass.newInstance();
 					underlyingConnection.setUnderLyingConnection(con);
 					return underlyingConnection;
-				} catch (Exception e) {
-					System.out.println("[jdbcdecorator] Could not instantiate class connectionClass: " + e);
+				} catch (InstantiationException e) {
+					System.out.println(NonRegisteringDriver.DECORATOR_LOGGING_PREFIX + "InstantiationException while instantiating class: " + connectionClass);
+					e.printStackTrace();
+					return con;
+				} catch (IllegalAccessException e) {
+					System.out.println(NonRegisteringDriver.DECORATOR_LOGGING_PREFIX + "IllegalAccessException while instantiating class: " + connectionClass);
+					e.printStackTrace();
 					return con;
 				}
 			} else {
