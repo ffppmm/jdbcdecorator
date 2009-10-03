@@ -86,17 +86,17 @@ public class Logger {
 	/**
 	 * counter for update, select, insert statements
 	 */
-	private long[] count = {0L,0L,0L,0L,0L};
+	private volatile long[] count = {0L,0L,0L,0L,0L};
 
 	/**
 	 * counter for execution time for update, select, insert statements
 	 */
-	private long[] millis = {0L,0L,0L,0L,0L};
+	private volatile long[] millis = {0L,0L,0L,0L,0L};
 
 	/**
 	 * counter for errors for update, select, insert statements
 	 */
-	private long errorCount = 0L;
+	private volatile long errorCount = 0L;
 	
 	/**
 	 * if the full stacktrace should be logged or not
@@ -106,12 +106,12 @@ public class Logger {
 	/**
 	 * contains StatementStatistics objects for each statement passing through
 	 */
-	private HashMap<String, StatementCharacteristics> statementStatistics = new HashMap<String, StatementCharacteristics>();
+	private volatile HashMap<String, StatementCharacteristics> statementStatistics = new HashMap<String, StatementCharacteristics>();
 
 	/**
 	 * represents the number of Statements that are not stored in {@link #statementStatistics}
 	 */
-	private long statementStatisticsOverflow = 0L;
+	private volatile long statementStatisticsOverflow = 0L;
 	
 	/**
 	 * logger for all statement categories
@@ -175,7 +175,7 @@ public class Logger {
 	/**
 	 * logging has started by this date
 	 */
-	private Date loggingStarted = new Date();
+	private volatile Date loggingStarted = new Date();
 	
 	/**
 	 * Holds the patterns and replacement Strings for sql statment normalization
@@ -485,18 +485,13 @@ public class Logger {
 	 * sets defaults for all Statistics
 	 */
 	public void resetStatistics() {
-		synchronized (Logger.class) {
-			loggingEnabled = true;
-			maxStatements = 400;
-			for (int i = 0; i < 5; i++) {
-				count[i] = 0L;
-				millis[i] = 0L;
-			}
-			errorCount = 0L;
-			displayFullStackTrace = false;
-			statementStatistics = new HashMap<String, StatementCharacteristics>();
-			statementStatisticsOverflow = 0L;
-			loggingStarted = new Date();
+		for (int i = 0; i < 5; i++) {
+			count[i] = 0L;
+			millis[i] = 0L;
 		}
+		errorCount = 0L;
+		statementStatistics = new HashMap<String, StatementCharacteristics>();
+		statementStatisticsOverflow = 0L;
+		loggingStarted = new Date();
 	}
 }
