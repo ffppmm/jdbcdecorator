@@ -9,8 +9,7 @@ directory.
 java classpath so they are loaded on startup.
  * configure your jdbc connection:
   * add jdbcdecorator: before your jdbc url
-  * use at.fpmedv.jdbc.Driver as driver for your SQL Connections
-  * add add -Djdbcdecorator.configuration=/PATH/TO/CONFIG/FILE.properties to your java commandline
+  * use at.fpmedv.jdbc.LoggingDriver as driver for your SQL Connections
  * add -Djdbclogger.configuration=/PATH/TO/PROPERTIES.FILE to your java command line
 
 A sample jdbclogger.properties file is included.

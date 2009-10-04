@@ -81,9 +81,9 @@
         <copy todir="${build.work.src}" overwrite="true">
             <fileset dir="${build.src}" includes="**/*.java"/>
         </copy>
-        <replace file="${build.work.src}/at/fpmedv/jdbc/Logger.java"
+        <replace file="${build.work.src}/at/fpmedv/jdbc/LoggingDriver.java"
             token="__builddate__" value="${TODAY}"/>
-        <replace file="${build.work.src}/at/fpmedv/jdbc/Logger.java"
+        <replace file="${build.work.src}/at/fpmedv/jdbc/LoggingDriver.java"
             token="__version__" value="${version}"/>
         <javac srcdir="${build.work.src}"
             source="1.5"
