@@ -5,7 +5,6 @@ This implementations does nothing. Hmm thats not quite right. It decorates
  * java.sql.Statement
  * java.sql.PreparedStatement
 
-And it brings a new Driver for jdbc: at.fpmedv.jdbc.Driver
 
 You can add functionality by simply extending ConnectionDecorator, StatementDecorator and PreparedStatementDecorator.
 
@@ -14,11 +13,7 @@ If you like to add functionality you must extend ConnectionDecorator, because th
 == How to use ==
 
 1) add jdbcdecorator: before your jdbc url
-2) use at.fpmedv.jdbc.Driver as driver for your SQL Connections
-3) add -Djdbcdecorator.configuration=/PATH/TO/CONFIG/FILE.properties
-
-Thats it, but nothing bad will happen if you don't specify the jdbcdecorator.connectionClassname.
-JDBC Decorator will just return the underlying connection class.
+2) use your.class.name.of.implementation.NonRegisteringDriver as driver for your SQL Connections
 
 == Underlying driver configuration ==
 Jdbcdecorator tries to load the following drivers:
@@ -37,4 +32,4 @@ Jdbcdecorator tries to load the following drivers:
  * org.hsqldb.jdbcDriver
  * org.h2.Driver
  
-If you use a different driver, you can specify it like this: -Djdbcdecorator.drivers=DRIVER1,DRIVER2,...
+If you use a different driver, you can specify it like this: jdbcdecorator.drivers=DRIVER1,DRIVER2,...

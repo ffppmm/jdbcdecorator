@@ -9,7 +9,7 @@
     <target name="init">
         <property name="Name" value="Jdbc Logger"/>
         <property name="year" value="2009-${year}"/>
-        <property name="version" value="0.1"/>
+        <property name="version" value="0.2"/>
         <property name="project" value="jdbc-decorator"/>
 
         <property name="home.dir" value=".."/>
@@ -75,9 +75,9 @@
         <copy todir="${build.work.src}" overwrite="true">
             <fileset dir="${build.src}" includes="**/*.java"/>
         </copy>
-        <replace file="${build.work.src}/at/fpmedv/jdbc/Driver.java"
+        <replace file="${build.work.src}/at/fpmedv/jdbc/NonRegisteringDriver.java"
             token="__builddate__" value="${TODAY}"/>
-        <replace file="${build.work.src}/at/fpmedv/jdbc/Driver.java"
+        <replace file="${build.work.src}/at/fpmedv/jdbc/NonRegisteringDriver.java"
             token="__version__" value="${version}"/>
         <javac srcdir="${build.work.src}"
             source="1.5"
