@@ -29,12 +29,12 @@ import at.fpmedv.util.Stopwatch;
 
 /**
  * 
- * Adds logging functionality to the underlying PreparedStatement
+ * Adds statistics functionality to the underlying PreparedStatement
  * 
  * @author Franz Philipp Moser
  *
  */
-public class PreparedStatementLogger extends PreparedStatementDecorator {
+public class PreparedStatementStatistics extends PreparedStatementDecorator {
 
 	/**
 	 * constructor storing the sql to execute
@@ -42,13 +42,13 @@ public class PreparedStatementLogger extends PreparedStatementDecorator {
 	 * @param preparedstatement the prepared statement that is decorated
 	 * @param sql The sql String to execute
 	 */
-	public PreparedStatementLogger(PreparedStatement preparedstatement, String sql) {
+	public PreparedStatementStatistics(PreparedStatement preparedstatement, String sql) {
 		super(preparedstatement, sql);
 	}
 
 	/**
 	 * Calls executeUpdate() on underlying PreparedStatement object, messures execution time, 
-	 * records and logs the statistics.
+	 * records the statistics.
 	 */
 	public int executeUpdate() throws SQLException {
 		Stopwatch sw = new Stopwatch();
@@ -61,7 +61,7 @@ public class PreparedStatementLogger extends PreparedStatementDecorator {
 			mayBe = error;
 		}
 		sw.stop();
-		Logger.getInstance().log(sql, sw.getElapsedTimeMillis(), mayBe);
+		Statistics.getInstance().recordStatistics(sql, sw.getElapsedTimeMillis());
 		if (mayBe != null)
 			throw mayBe;
 		return returnValue;
@@ -79,7 +79,7 @@ public class PreparedStatementLogger extends PreparedStatementDecorator {
 			mayBe = error;
 		}
 		sw.stop();
-		Logger.getInstance().log(sql, sw.getElapsedTimeMillis(), mayBe);
+		Statistics.getInstance().recordStatistics(sql, sw.getElapsedTimeMillis());
 		if (mayBe != null)
 			throw mayBe;
 		return returnValue;
@@ -97,7 +97,7 @@ public class PreparedStatementLogger extends PreparedStatementDecorator {
 			mayBe = error;
 		}
 		sw.stop();
-		Logger.getInstance().log(sql, sw.getElapsedTimeMillis(), mayBe);
+		Statistics.getInstance().recordStatistics(sql, sw.getElapsedTimeMillis());
 		if (mayBe != null)
 			throw mayBe;
 		return returnValue;
@@ -115,7 +115,7 @@ public class PreparedStatementLogger extends PreparedStatementDecorator {
 			mayBe = error;
 		}
 		sw.stop();
-		Logger.getInstance().log(sql, sw.getElapsedTimeMillis(), mayBe);
+		Statistics.getInstance().recordStatistics(sql, sw.getElapsedTimeMillis());
 		if (mayBe != null)
 			throw mayBe;
 		return returnValue;
@@ -133,7 +133,7 @@ public class PreparedStatementLogger extends PreparedStatementDecorator {
 			mayBe = error;
 		}
 		sw.stop();
-		Logger.getInstance().log(sql, sw.getElapsedTimeMillis(), mayBe);
+		Statistics.getInstance().recordStatistics(sql, sw.getElapsedTimeMillis());
 		if (mayBe != null)
 			throw mayBe;
 		return returnValue;
@@ -151,7 +151,7 @@ public class PreparedStatementLogger extends PreparedStatementDecorator {
 			mayBe = error;
 		}
 		sw.stop();
-		Logger.getInstance().log(sql, sw.getElapsedTimeMillis(), mayBe);
+		Statistics.getInstance().recordStatistics(sql, sw.getElapsedTimeMillis());
 		if (mayBe != null)
 			throw mayBe;
 		return returnValue;
@@ -169,7 +169,7 @@ public class PreparedStatementLogger extends PreparedStatementDecorator {
 			mayBe = error;
 		}
 		sw.stop();
-		Logger.getInstance().log(sql, sw.getElapsedTimeMillis(), mayBe);
+		Statistics.getInstance().recordStatistics(sql, sw.getElapsedTimeMillis());
 		if (mayBe != null)
 			throw mayBe;
 		return returnValue;
@@ -187,7 +187,7 @@ public class PreparedStatementLogger extends PreparedStatementDecorator {
 			mayBe = error;
 		}
 		sw.stop();
-		Logger.getInstance().log(sql, sw.getElapsedTimeMillis(), mayBe);
+		Statistics.getInstance().recordStatistics(sql, sw.getElapsedTimeMillis());
 		if (mayBe != null)
 			throw mayBe;
 		return returnValue;
@@ -205,7 +205,7 @@ public class PreparedStatementLogger extends PreparedStatementDecorator {
 			mayBe = error;
 		}
 		sw.stop();
-		Logger.getInstance().log(sql, sw.getElapsedTimeMillis(), mayBe);
+		Statistics.getInstance().recordStatistics(sql, sw.getElapsedTimeMillis());
 		if (mayBe != null)
 			throw mayBe;
 		return returnValue;
@@ -223,7 +223,7 @@ public class PreparedStatementLogger extends PreparedStatementDecorator {
 			mayBe = error;
 		}
 		sw.stop();
-		Logger.getInstance().log(sql, sw.getElapsedTimeMillis(), mayBe);
+		Statistics.getInstance().recordStatistics(sql, sw.getElapsedTimeMillis());
 		if (mayBe != null)
 			throw mayBe;
 		return returnValue;
@@ -241,7 +241,7 @@ public class PreparedStatementLogger extends PreparedStatementDecorator {
 			mayBe = error;
 		}
 		sw.stop();
-		Logger.getInstance().log(sql, sw.getElapsedTimeMillis(), mayBe);
+		Statistics.getInstance().recordStatistics(sql, sw.getElapsedTimeMillis());
 		if (mayBe != null)
 			throw mayBe;
 		return returnValue;
@@ -259,7 +259,7 @@ public class PreparedStatementLogger extends PreparedStatementDecorator {
 			mayBe = error;
 		}
 		sw.stop();
-		Logger.getInstance().log(sql, sw.getElapsedTimeMillis(), mayBe);
+		Statistics.getInstance().recordStatistics(sql, sw.getElapsedTimeMillis());
 		if (mayBe != null)
 			throw mayBe;
 		return returnValue;

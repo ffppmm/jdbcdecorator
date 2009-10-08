@@ -28,20 +28,20 @@ import at.fpmedv.util.Stopwatch;
 
 /**
  * 
- * Adds logging functionality to the underlying Statement
+ * Adds statistics functionality to the underlying Statement
  * 
  * @author Franz Philipp Moser
  *
  */
-public class StatementLogger extends StatementDecorator {
+public class StatementStatistics extends StatementDecorator {
 	
-	public StatementLogger(java.sql.Statement statement) {
+	public StatementStatistics(java.sql.Statement statement) {
 		super(statement);
 	}
 	
 	/**
 	 * Calls executeQuery() on underlying Statement object, messures execution time, 
-	 * records and logs the statistics.
+	 * records the statistics.
 	 * 
 	 * @param sql the sql to execute
 	 */
@@ -56,7 +56,7 @@ public class StatementLogger extends StatementDecorator {
 			mayBe = error;
 		}
 		sw.stop();
-		Logger.getInstance().log(sql, sw.getElapsedTimeMillis(), mayBe);
+		Statistics.getInstance().recordStatistics(sql, sw.getElapsedTimeMillis());
 		if (mayBe != null)
 			throw mayBe;
 		return returnValue;
@@ -64,7 +64,7 @@ public class StatementLogger extends StatementDecorator {
 	
 	/**
 	 * Calls executeUpdate() on underlying Statement object, messures execution time, 
-	 * records and logs the statistics.
+	 * records the statistics.
 	 * 
 	 * @param sql the sql to execute
 	 */
@@ -79,7 +79,7 @@ public class StatementLogger extends StatementDecorator {
 			mayBe = error;
 		}
 		sw.stop();
-		Logger.getInstance().log(sql, sw.getElapsedTimeMillis(), mayBe);
+		Statistics.getInstance().recordStatistics(sql, sw.getElapsedTimeMillis());
 		if (mayBe != null)
 			throw mayBe;
 		return returnValue;
@@ -87,7 +87,7 @@ public class StatementLogger extends StatementDecorator {
 	
 	/**
 	 * Calls execute() on underlying Statement object, messures execution time, 
-	 * records and logs the statistics.
+	 * records the statistics.
 	 * 
 	 * @param sql the sql to execute
 	 */
@@ -102,7 +102,7 @@ public class StatementLogger extends StatementDecorator {
 			mayBe = error;
 		}
 		sw.stop();
-		Logger.getInstance().log(sql, sw.getElapsedTimeMillis(), mayBe);
+		Statistics.getInstance().recordStatistics(sql, sw.getElapsedTimeMillis());
 		if (mayBe != null)
 			throw mayBe;
 		return returnValue;

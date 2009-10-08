@@ -25,9 +25,9 @@
 </head>
 <body>
 <h1>Global Statistics</h1>
-<div class="<% param.loggingEnabled %>">Logging <% param.loggingEnabled %></div>
-<div>Logging started: <% param.loggingStarted %></div>
-<div>Seconds running: <% param.loggingStartedSeconds %></div>
+<div class="<% param.statisticsEnabled %>">Statistics <% param.statisticsEnabled %></div>
+<div>Logging started: <% param.statisticsStarted %></div>
+<div>Seconds running: <% param.statisticsStartedSeconds %></div>
 <div>Total statement count: <% param.totalCount %></div>
 <div>Total millis count: <% param.totalMillis %></div>
 <div>Currently we issue <% param.statementsPerSecond %> Statements per second (average: total statement count / seconds running)</div>

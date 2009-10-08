@@ -5,7 +5,7 @@ if (!global.fpmedv) {
 fpmedv.JdbcStatistics = {};
 
 fpmedv.JdbcStatistics.renderStatistics = function () {
-   var stats = Packages.at.fpmedv.jdbc.Logger.getInstance();
+   var stats = Packages.at.fpmedv.jdbc.Statistics.getInstance();
    var param = {};
    param.nocatTotalCount = stats.getCount(stats.DEFAULT);
    param.nocatTotalMillis = stats.getMillis(stats.DEFAULT);
@@ -26,7 +26,7 @@ fpmedv.JdbcStatistics.renderStatistics = function () {
    param.totalCount = param.nocatTotalCount + param.selectsTotalCount + param.updatesTotalCount + param.insertsTotalCount + param.deletesTotalCount;
    param.totalMillis = param.nocatTotalCount + param.selectsTotalMillis + param.updatesTotalMillis + param.insertsTotalMillis + param.deletesTotalMillis;
 
-   param.loggingEnabled = stats.isLoggingEnabled() ? "enabled" : "disabled";
+   param.statisticsEnabled = stats.areStatisticsEnabled() ? "enabled" : "disabled";
    param.errorCount = stats.getErrorCount();
 
    statements = stats.getNormalizedStatements();
@@ -36,15 +36,15 @@ fpmedv.JdbcStatistics.renderStatistics = function () {
    param.maxStatements = stats.getMaxStatements();
    param.statementStatisticsOverflow = stats.getStatementStatisticsOverflow();
    
-   param.loggingStarted = stats.getLoggingStarted();
+   param.statisticsStarted = stats.getStatisticsStarted();
    // get millis
    param.now = new Date();
-   param.loggingStartedMillis = param.now - param.loggingStarted.getTime();
-   param.loggingStartedSeconds = param.loggingStartedMillis / 1000;
-   param.statementsPerSecond = param.totalCount / param.loggingStartedSeconds;
+   param.statisticsStartedMillis = param.now - param.statisticsStarted.getTime();
+   param.statisticsStartedSeconds = param.statisticsStartedMillis / 1000;
+   param.statementsPerSecond = param.totalCount / param.statisticsStartedSeconds;
    
    // convert to string
-   param.loggingStarted = param.loggingStarted.toString();
+   param.statisticsStarted = param.statisticsStarted.toString();
    
    renderSkin("fpmedv.JdbcStatistics.StatmentsHeader", param);
    while (statementKeysIterator.hasNext()) {

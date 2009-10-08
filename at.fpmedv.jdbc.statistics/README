@@ -1,0 +1,18 @@
+= JDBC Statistics =
+The JDBC Statistics driver adds statistics to the jdbc connection. 
+SQL Strings are normalized with configurable patterns. This
+package needs the JDBC Decorator Implementation bundeld in the lib
+directory.
+
+== How to use ==
+ * Put the jdbc-statistics-x.x.jar and the jdbc-decorator-x.x.jar into your
+java classpath so they are loaded on startup.
+ * configure your jdbc connection:
+  * add jdbcdecorator: before your jdbc url
+  * use at.fpmedv.jdbc.StatisticsDriver as driver for your SQL Connections
+ * add -Djdbcstatistics.configuration=/PATH/TO/PROPERTIES.FILE to your java command line
+
+A sample jdbcstatistics.properties file is included.
+
+Since I'm a helma developer I added a small lib that outputs the statistics. Just look
+at the helma subdir.
