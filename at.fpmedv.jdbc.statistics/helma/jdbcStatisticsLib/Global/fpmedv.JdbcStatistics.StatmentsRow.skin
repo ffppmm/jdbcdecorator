@@ -1,2 +1,2 @@
-<tr><td><% param.count %></td><td><% param.millis %></td><td><% param.average %></td><td><% param.percentageCount %></td><td><% param.percentageMillis %></td><td align="center"><% param.statementType %></td><td><% param.lastCommit %></td><td><% param.key %></td></tr>
+<tr><td><% param.count %></td><td><% param.millis %></td><td><% param.average %></td><td><% param.percentageCount %></td><td><% param.percentageMillis %></td><td align="center"><% param.statementType %></td><td onmouseover="Tip('<% param.lastCommit %>');" onmouseout="UnTip()"><% param.lastCommitTimestamp %></td><td><% param.key %></td></tr>
 
