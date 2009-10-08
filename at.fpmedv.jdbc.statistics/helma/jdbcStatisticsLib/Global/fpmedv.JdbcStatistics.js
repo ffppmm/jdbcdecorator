@@ -47,8 +47,10 @@ fpmedv.JdbcStatistics.renderStatistics = function () {
    param.statisticsStarted = param.statisticsStarted.toString();
    
    renderSkin("fpmedv.JdbcStatistics.StatmentsHeader", param);
+   var i = 0;
    while (statementKeysIterator.hasNext()) {
       param.key = statementKeysIterator.next();
+      param.position = i++; 
       var stmt = statements.get(param.key);
       param.count = stmt.getCount();
       param.millis = stmt.getMillis();

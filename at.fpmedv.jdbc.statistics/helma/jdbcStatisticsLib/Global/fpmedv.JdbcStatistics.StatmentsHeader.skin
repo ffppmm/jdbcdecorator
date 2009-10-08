@@ -31,6 +31,7 @@
 <div><strong>Total statement count:</strong> <% param.totalCount %></div>
 <div><strong>Total millis count:</strong> <% param.totalMillis %></div>
 <div>Currently we issue <% param.statementsPerSecond %> Statements per second (average: total statement count / seconds running)</div>
+<form action="">
 <table id="globalStatistics" class="fpmedv-tablesorter"><thead><tr><th>Type</th><th>Count</th><th>Millis</th><th>Average</th></tr></thead>
 <tbody>
 <tr><td>Selects</td><td><% param.selectsTotalCount %></td><td><% param.selectsTotalMillis %></td><td><% param.selectsTotalAverage %></td></tr>
@@ -41,5 +42,5 @@
 </tbody>
 </table>
 <h1>Individual Statement Statistics (<% param.statementsSize %>) <a href="#asterix"><sup>*</sup></a></h1>
-<table id="statements" class="fpmedv-tablesorter"><thead><tr><th>Count</th><th>Millis</th><th>Average</th><th>% count</th><th>% millis</th><th>Type</th><th>last commit</th><th>SQL</th></tr></thead>
+<table id="statements" class="fpmedv-tablesorter"><thead><tr><th>X</th><th>Count</th><th>Millis</th><th>Average</th><th>% count</th><th>% millis</th><th>Type</th><th>last commit</th><th>SQL</th></tr></thead>
 <tbody>
