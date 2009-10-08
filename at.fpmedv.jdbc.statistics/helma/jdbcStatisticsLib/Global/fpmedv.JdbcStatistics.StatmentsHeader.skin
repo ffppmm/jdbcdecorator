@@ -26,10 +26,10 @@
 <body><script src="http://www.fpmedv.at/fileadmin/js/wz_tooltip.js" type="text/javascript"></script>
 <h1>Global Statistics</h1>
 <div class="<% param.statisticsEnabled %>">Statistics <% param.statisticsEnabled %></div>
-<div>Statistics started: <% param.statisticsStarted %></div>
-<div>Seconds running: <% param.statisticsStartedSeconds %></div>
-<div>Total statement count: <% param.totalCount %></div>
-<div>Total millis count: <% param.totalMillis %></div>
+<div><strong>Statistics started:</strong> <% param.statisticsStarted %></div>
+<div><strong>Seconds running:</strong> <% param.statisticsStartedSeconds %></div>
+<div><strong>Total statement count:</strong> <% param.totalCount %></div>
+<div><strong>Total millis count:</strong> <% param.totalMillis %></div>
 <div>Currently we issue <% param.statementsPerSecond %> Statements per second (average: total statement count / seconds running)</div>
 <table id="globalStatistics" class="fpmedv-tablesorter"><thead><tr><th>Type</th><th>Count</th><th>Millis</th><th>Average</th></tr></thead>
 <tbody>
