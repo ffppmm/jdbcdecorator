@@ -63,6 +63,6 @@ fpmedv.JdbcStatistics.renderStatistics = function () {
 };
 
 fpmedv.JdbcStatistics.resetStatistics = function () {
-	var logger = Packages.at.fpmedv.jdbc.Logger.getInstance();
+	var logger = Packages.at.fpmedv.jdbc.Statistics.getInstance();
 	logger.resetStatistics();
 };
