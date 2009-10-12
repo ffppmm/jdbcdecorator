@@ -22,6 +22,7 @@
 package at.fpmedv.jdbc;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -408,27 +409,38 @@ public class Statistics {
 	 * initializes the Statistics
 	 */
 	public void init() {
-		try {
-			properties.load(new FileInputStream(CONFIGURATION_FILE_NAME));
-			maxStatements = Integer.parseInt(properties.getProperty(Statistics.JDBC_STATISTICS_PREFIX + "maxStatementStatistics"));
-			statisticsEnabled = Boolean.parseBoolean(properties.getProperty(Statistics.JDBC_STATISTICS_PREFIX + "statisticsEnabled", "true"));
-			displayFullStackTrace = Boolean.parseBoolean(properties.getProperty(Statistics.JDBC_STATISTICS_PREFIX + "displayFullStackTrace"));
-			String baseNormalizeProperty = Statistics.JDBC_STATISTICS_PREFIX + "normalize.";
-			int y = 0;
-			while (properties.getProperty(baseNormalizeProperty + y + ".pattern") != null && properties.getProperty(baseNormalizeProperty + y + ".replacement") != null) {
-				try {
-					boolean mayBeDisabled = properties.getProperty(baseNormalizeProperty + y + ".doNotDisable") == "true" ? true : false;
-					RegExpReplacementContainer patternReplacement = new RegExpReplacementContainer(properties.getProperty(baseNormalizeProperty + y + ".pattern"), properties.getProperty(baseNormalizeProperty + y + ".replacement"), true, mayBeDisabled);
-
-					replacePatterns.add(patternReplacement);
-				} catch(PatternSyntaxException e) {
-					System.err.println(JDBC_STATISTICS_LOGGING_PREFIX + "Could not compile pattern: " + properties.getProperty(baseNormalizeProperty + y) + " " +  e);
+		if (CONFIGURATION_FILE_NAME != null) {
+			try {
+				properties.load(new FileInputStream(CONFIGURATION_FILE_NAME));
+				maxStatements = Integer.parseInt(properties.getProperty(Statistics.JDBC_STATISTICS_PREFIX + "maxStatementStatistics", "400"));
+				statisticsEnabled = Boolean.parseBoolean(properties.getProperty(Statistics.JDBC_STATISTICS_PREFIX + "statisticsEnabled", "true"));
+				displayFullStackTrace = Boolean.parseBoolean(properties.getProperty(Statistics.JDBC_STATISTICS_PREFIX + "displayFullStackTrace", "false"));
+				String baseNormalizeProperty = Statistics.JDBC_STATISTICS_PREFIX + "normalize.";
+				int y = 0;
+				while (properties.getProperty(baseNormalizeProperty + y + ".pattern") != null && properties.getProperty(baseNormalizeProperty + y + ".replacement") != null) {
+					try {
+						boolean mayBeDisabled = properties.getProperty(baseNormalizeProperty + y + ".doNotDisable") == "true" ? true : false;
+						RegExpReplacementContainer patternReplacement = new RegExpReplacementContainer(properties.getProperty(baseNormalizeProperty + y + ".pattern"), properties.getProperty(baseNormalizeProperty + y + ".replacement"), true, mayBeDisabled);
+	
+						replacePatterns.add(patternReplacement);
+					} catch(PatternSyntaxException e) {
+						System.err.println(JDBC_STATISTICS_LOGGING_PREFIX + "Could not compile pattern: " + properties.getProperty(baseNormalizeProperty + y) + " " +  e);
+					}
+					y++;
 				}
-				y++;
+				System.out.println(JDBC_STATISTICS_LOGGING_PREFIX + VERSION + " build on " + BUILD_DATE + " init.");
+			} catch (IOException e) {
+				// something happened on the way to heaven
+				System.err.println(JDBC_STATISTICS_LOGGING_PREFIX + "Error reading properties file: " + CONFIGURATION_FILE_NAME + ". Using defaults. " +  e);
 			}
-			System.out.println(JDBC_STATISTICS_LOGGING_PREFIX + VERSION + " build on " + BUILD_DATE + " init.");
-		} catch (Exception e) {
-			System.err.println(JDBC_STATISTICS_LOGGING_PREFIX + "Error reading properties file: " + CONFIGURATION_FILE_NAME + ". Using defaults. " +  e);
+		} else {
+			replacePatterns = new ArrayList<RegExpReplacementContainer>();
+			replacePatterns.add(new RegExpReplacementContainer("([=,\\s(]\\s*)\\d+(,|\\s|\\)|$)", "$1X$2", true, false));
+			replacePatterns.add(new RegExpReplacementContainer("([=,\\s(]\\s*)'(('')|[^'])+'(,|\\s|\\)|$)", "$1'X'$4", true, false));
+			replacePatterns.add(new RegExpReplacementContainer("ts\\s*'[^']+'", "ts X", true, false));
+			replacePatterns.add(new RegExpReplacementContainer(",\\s*'?X'?", "", true, false));
+			replacePatterns.add(new RegExpReplacementContainer(",\\s*(null)|(NULL)", "", true, true));
+			replacePatterns.add(new RegExpReplacementContainer(",\\s*\\d+", "", true, true));			
 		}
 	}
 	
